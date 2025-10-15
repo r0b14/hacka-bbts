@@ -24,7 +24,7 @@ flowchart LR
       FST[(Storage – opcional p/ CSV bruto)]
     end
 
-    subgraph AZ[AWS? -> **AZURE**]
+    subgraph AZ[Azure]
       SWA[Azure Static Web Apps\n(hosting do FE)]
       AF[(Azure Functions Python\n/analyze-csv)]
       AOAI[Azure OpenAI\n(opcional para insights)]
@@ -80,7 +80,7 @@ flowchart TD
     G --> J[Permitir acesso]
     H --> J
     I --> J
-    F -->|não autorizado| K[403 – bloqueio + redirect]
+    F -->|nao autorizado| K[403 – bloqueio + redirect]
 ```
 
 **Coleções/estruturas (exemplo):**
