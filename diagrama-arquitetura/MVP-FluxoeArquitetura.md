@@ -12,22 +12,22 @@ flowchart LR
       U[Usuário - admin/gestor/operador]
     end
 
-    subgraph FE[Frontend – React (Vite/TS/Tailwind)]
-      RT[Rotas + Guards (RBAC)]
+    subgraph FE[Frontend – React - Vite/TS/Tailwind]
+      RT[Rotas + Guards - RBAC]
       TT[TanStack Table + PapaParse]
       RC[Recharts]
     end
 
     subgraph FB[Firebase]
-      FA[Auth (Email/Senha + Custom Claims)]
-      FS[Firestore (users, uploads, metrics)]
+      FA[Auth - Email/Senha + Custom Claims]
+      FS[Firestore - users, uploads, metrics]
       FST[(Storage – opcional p/ CSV bruto)]
     end
 
     subgraph AZ[Azure]
-      SWA[Azure Static Web Apps\n(hosting do FE)]
-      AF[(Azure Functions Python\n/analyze-csv)]
-      AOAI[Azure OpenAI\n(opcional para insights)]
+      SWA[Azure Static Web Apps\nhosting do FE]
+      AF[Azure Functions Python\nanalyze-csv]
+      AOAI[Azure OpenAI\nopcional para insights]
     end
 
     subgraph N8N[n8n]
@@ -46,11 +46,11 @@ flowchart LR
     AF -- métricas/insights --> FE
     AF -- persistir resultados --> FS
 
-    AF -- (opcional) prompt métricas --> AOAI
+    AF -- opcional prompt métricas --> AOAI
     AOAI -- resumo/insights --> AF
 
     AF -- POST --> WH
-    WH -- (opcional) callback/atualização --> FS
+    WH -- opcional callback/atualização --> FS
 
     FE --> RC
 ```
