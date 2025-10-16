@@ -28,6 +28,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function login(email: string, password: string) {
     setLoading(true);
+    if (!auth) {
+      // fallback mock login when firebase not configured
+      setUser({ email: email as any } as any);
+      setRole(getUserRoleMock(email));
+      setLoading(false);
+      return;
+    }
     await signInWithEmailAndPassword(auth, email, password);
     const u = auth.currentUser;
     setUser(u);
@@ -36,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function logout() {
-    await signOut(auth);
+    if (auth) await signOut(auth);
     setUser(null);
     setRole(null);
   }
