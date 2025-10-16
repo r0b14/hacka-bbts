@@ -1,27 +1,28 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import type { User } from "firebase/auth";
 
-// Your web app's Firebase configuration (provided)
+// Pegamos tudo do .env (Vite)
 const firebaseConfig = {
-  apiKey: "AIzaSyDO0Ig2xLkO9cDKWK0RjHNB6BYKXxj0KXs",
-  authDomain: "revolux-a54ca.firebaseapp.com",
-  projectId: "revolux-a54ca",
-  storageBucket: "revolux-a54ca.firebasestorage.app",
-  messagingSenderId: "716477461569",
-  appId: "1:716477461569:web:339aab1ff6603f553802c0",
-  measurementId: "G-GRD1DND3RC"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN as string,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID as string,
+  // storageBucket, measurementId etc. só se você for usar
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const analytics = getAnalytics(app);
+// garante singleton (evita “Firebase App named '[DEFAULT]' already exists” no HMR)
+function ensureApp(): FirebaseApp {
+  return getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+}
+
+export const app = ensureApp();
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+// util: esperar o primeiro estado de auth (útil nos guards)
 export const waitForAuthInit = () =>
   new Promise<User | null>((resolve) => {
+    const { onAuthStateChanged } = await import("firebase/auth");
     const unsub = onAuthStateChanged(auth, (u) => { resolve(u); unsub(); });
   });
