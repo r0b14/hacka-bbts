@@ -1,0 +1,22 @@
+node_modules/
+/.pnp/
+.pnp.js
+dist/
+build/
+/.idea/
+.vscode/
+*.log
+.DS_Store
+.env
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# npm
+package-lock.json
