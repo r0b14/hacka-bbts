@@ -1,42 +1,27 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
-// Read config from Vite env. If values are missing, avoid initializing Firebase
+// Your web app's Firebase configuration (provided)
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  apiKey: "AIzaSyDO0Ig2xLkO9cDKWK0RjHNB6BYKXxj0KXs",
+  authDomain: "revolux-a54ca.firebaseapp.com",
+  projectId: "revolux-a54ca",
+  storageBucket: "revolux-a54ca.firebasestorage.app",
+  messagingSenderId: "716477461569",
+  appId: "1:716477461569:web:339aab1ff6603f553802c0",
+  measurementId: "G-GRD1DND3RC"
 };
 
-let app: ReturnType<typeof initializeApp> | null = null;
-let auth: ReturnType<typeof getAuth> | null = null;
-
-const hasConfig = Boolean(firebaseConfig.apiKey && firebaseConfig.authDomain && firebaseConfig.projectId);
-
-if (hasConfig) {
-  try {
-    app = initializeApp(firebaseConfig as any);
-    auth = getAuth(app);
-  } catch (err) {
-    // If initialization fails (invalid key, etc.), don't throw — fallback to stub behavior
-    // Log for developer visibility
-    // eslint-disable-next-line no-console
-    console.warn('Firebase init failed:', err);
-    app = null;
-    auth = null;
-  }
-} else {
-  // eslint-disable-next-line no-console
-  console.info('Firebase config not provided — running in mock/offline mode.');
-}
-
-export { app, auth };
+// Initialize Firebase
+export const app = initializeApp(firebaseConfig);
+export const analytics = getAnalytics(app);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
 
 export const waitForAuthInit = () =>
   new Promise<User | null>((resolve) => {
-    if (!auth) return resolve(null);
-    const unsub = onAuthStateChanged(auth as any, (u) => {
-      resolve(u);
-      unsub();
-    });
+    const unsub = onAuthStateChanged(auth, (u) => { resolve(u); unsub(); });
   });
