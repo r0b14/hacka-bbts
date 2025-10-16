@@ -1,6 +1,6 @@
 import { Protected } from "../components/Protected";
 import Navbar from "../components/Navbar";
-import { Role } from "../../app/services/roles";
+import { Role } from "../services/roles";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 const data = [

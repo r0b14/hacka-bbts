@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import FileDrop from "../components/FileDrop";
 import CsvTable from "../components/CsvTable";
 import { useState } from "react";
-import type { Role } from "../../app/services/roles";
+import type { Role } from "../services/roles";
 
 export default function UploadCsv() {
   const [file, setFile] = useState<File | null>(null);
