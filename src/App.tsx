@@ -1,22 +1,22 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./app/context/AuthContext";
-import Login from "./app/routes/Login";
-import Dashboard from "./app/routes/Dashboard";
-import UploadCsv from "./app/routes/UploadCsv";
-import Relatorios from "./app/routes/Relatorios";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import UploadCsv from './app/routes/UploadCsv';
+import Relatorios from './app/routes/Relatorios';
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload-csv" element={<UploadCsv />} />
           <Route path="/relatorios" element={<Relatorios />} />
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

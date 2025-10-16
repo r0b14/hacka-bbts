@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Self-hosted font declarations (optional). Place font files in `src/assets/fonts/`.
+	 If the files are not present, browsers will fall back to Space Grotesk / Inter. */
+@font-face {
+	font-family: 'RevoluxDisplay';
+	src: url('./assets/fonts/RevoluxDisplay.woff2') format('woff2'),
+			 url('./assets/fonts/RevoluxDisplay.woff') format('woff');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'RevoluxSub';
+	src: url('./assets/fonts/RevoluxSub.woff2') format('woff2'),
+			 url('./assets/fonts/RevoluxSub.woff') format('woff');
+	font-weight: 400 600;
+	font-style: normal;
+	font-display: swap;
+}
+
+
 /*
 	Responsividade mobile-first intensiva
 	- tipografia responsiva com clamp()
@@ -35,9 +55,9 @@
 	}
 
 	/* headings with responsive sizes */
-	h1 { font-size: clamp(1.25rem, 1.05rem + 2.2vw, 2rem); line-height: 1.1; }
-	h2 { font-size: clamp(1.125rem, 1rem + 1.1vw, 1.5rem); line-height: 1.15; }
-	h3 { font-size: clamp(1rem, 0.95rem + 0.6vw, 1.125rem); }
+	h1 { font-size: clamp(1.25rem, 1.05rem + 2.2vw, 2rem); line-height: 1.1; font-family: 'RevoluxDisplay', 'Space Grotesk', 'Inter', ui-sans-serif, system-ui; }
+	h2 { font-size: clamp(1.125rem, 1rem + 1.1vw, 1.5rem); line-height: 1.15; font-family: 'RevoluxSub', 'Space Grotesk', 'Inter', ui-sans-serif, system-ui; }
+	h3 { font-size: clamp(1rem, 0.95rem + 0.6vw, 1.125rem); font-family: 'RevoluxSub', 'Space Grotesk', 'Inter', ui-sans-serif, system-ui; }
 
 	/* default link appearance */
 	a { @apply text-sky-600 hover:underline; }
