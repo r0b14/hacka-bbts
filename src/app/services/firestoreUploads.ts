@@ -1,6 +1,5 @@
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db, auth } from "./firebase";
-import type { Metrics } from "./types";
 
 export async function createUploadMeta(file: File) {
   const uid = auth.currentUser?.uid;
@@ -14,11 +13,17 @@ export async function createUploadMeta(file: File) {
     processedAt: null,
     insights: null,
     metrics: null,
+    storagePath: null,
+    errorMessage: null,
   });
   return ref.id;
 }
 
-export async function finalizeUpload(uploadId: string, metrics: Metrics, insights?: string) {
+export async function attachStoragePath(uploadId: string, storagePath: string) {
+  await updateDoc(doc(db, "uploads", uploadId), { storagePath });
+}
+
+export async function finalizeUpload(uploadId: string, metrics: any, insights?: string) {
   await updateDoc(doc(db, "uploads", uploadId), {
     status: "processed",
     processedAt: serverTimestamp(),
@@ -27,10 +32,10 @@ export async function finalizeUpload(uploadId: string, metrics: Metrics, insight
   });
 }
 
-export async function failUpload(uploadId: string, errorMessage: string) {
+export async function failUpload(uploadId: string, msg: string) {
   await updateDoc(doc(db, "uploads", uploadId), {
     status: "error",
     processedAt: serverTimestamp(),
-    errorMessage,
+    errorMessage: msg,
   });
 }

@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import UploadCsv from './app/routes/UploadCsv';
 import Relatorios from './app/routes/Relatorios';
+import Signup from './pages/Signup';
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload-csv" element={<UploadCsv />} />
           <Route path="/relatorios" element={<Relatorios />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth, waitForAuthInit } from "../services/firebase";
+import { auth, waitForAuthInit, db } from "../services/firebase";
 import { signInWithEmailAndPassword, signOut, User } from "firebase/auth";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { Role, getUserRoleMock } from "../services/roles";
 
 type AuthState = {
@@ -12,6 +13,20 @@ type AuthState = {
 };
 
 const Ctx = createContext<AuthState>({} as any);
+
+/** Garante que exista um documento do usuário em Firestore após login */
+async function ensureUserDoc(user: User) {
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
+  if (!snap.exists()) {
+    await setDoc(userRef, {
+      email: user.email,
+      name: user.displayName || "Usuário",
+      role: "operador", // role padrão; admin pode alterar depois
+      createdAt: serverTimestamp(),
+    });
+  }
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -36,7 +51,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     await signInWithEmailAndPassword(auth, email, password);
-    const u = auth.currentUser;
+    const u = auth.currentUser!;
+    await ensureUserDoc(u);
     setUser(u);
     setRole(getUserRoleMock(u?.email ?? null));
     setLoading(false);
@@ -55,4 +71,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuth() { return useContext(Ctx); }
+export function useAuth() {
+  return useContext(Ctx);
+}
